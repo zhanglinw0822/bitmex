@@ -1,11 +1,13 @@
+import datetime
+import time
+
+from watchdog.observers import Observer
+
 import DBHelper
 import FileEventHandler
 import FileHelper
-import time
-import datetime
 import bitmex
 
-from watchdog.observers import Observer
 
 def scanorder(strategy):
     path = strategy.get('path')
@@ -15,15 +17,15 @@ def scanorder(strategy):
         nowTime = lambda: int(round(time.time() * 1000))
         content = FileHelper.read_one_line(file)
 
-        create_order(strategy,content)
+        create_order(strategy, content)
 
         DBHelper.query("order", None)
-        bakPath = path +"/bak/";
+        bakPath = path + "/bak/";
         FileHelper.create(bakPath)
-        FileHelper.copy(file, bakPath +file.replace(path, "")+str(nowTime())+".txt")
+        FileHelper.copy(file, bakPath + file.replace(path, "") + str(nowTime()) + ".txt")
 
 
-def create_order(strategy,content):
+def create_order(strategy, content):
     cols = content.split(" ")
 
     ordertype = cols[2]
@@ -42,12 +44,12 @@ def create_order(strategy,content):
         side = 'Buy'
     if ordertype == 'P':
         side = 'Sell'
-    # client = bitmex.bitmex(api_key=strategy.get('key'),api_secret=strategy.get('secret'))
-    # 价格需要获取
-    # client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType=Market).result()
-    order = {'market': cols[0], 'symbol': symbol, 'ordertype': ordertype, 'orderpricetype': cols[3], 'orderqty': orderQty
-        , 'name': strategy.get('name'), 'orderid':'', 'createtime': datetime.datetime.now()}
+    client = bitmex.bitmex(api_key=strategy.get('key'), api_secret=strategy.get('secret'))
+    orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
+    order = {'market': cols[0], 'symbol': symbol, 'ordertype': ordertype, 'orderpricetype': cols[3],
+             'orderqty': orderQty, 'name': strategy.get('name'), 'orderid': orderresult[0]['orderID'], 'createtime': datetime.datetime.now()}
     DBHelper.insert("order", order)
+
 
 def addOrderObserver(strategy):
     observer = Observer()
@@ -57,8 +59,11 @@ def addOrderObserver(strategy):
     observer.start()
     try:
         while True:
-            time.sleep(1)
-            scanorder(strategy)
+            try:
+                time.sleep(1)
+                scanorder(strategy)
+            except Exception as e:
+                print('except:', e)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
