@@ -19,7 +19,7 @@ def scanorder(strategy):
 
         create_order(strategy, content)
 
-        DBHelper.query("order", None)
+        # DBHelper.query("order", None)
         bakPath = path + "/bak/";
         FileHelper.create(bakPath)
         FileHelper.copy(file, bakPath + file.replace(path, "") + str(nowTime()) + ".txt")
