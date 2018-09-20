@@ -26,11 +26,26 @@ def scanorder(strategy):
 def create_order(strategy,content):
     cols = content.split(" ")
 
-    #client = bitmex.bitmex(api_key=strategy.get('key'),api_secret=strategy.get('secret'))
-    #价格需要获取
-    #client.Order.Order_new(symbol=cols[1], orderQty=cols[4], side=Buy, ordType=Market).result()
-
-    order = {'market': cols[0], 'symbol': cols[1], 'ordertype': cols[2], 'orderpricetype': cols[3], 'orderqty': cols[4]
+    ordertype = cols[2]
+    symbol = cols[1]
+    orderQty = cols[4]
+    side = None
+    if ordertype == 'V':
+        side = 'Buy'
+    if ordertype == 'X':
+        side = 'Sell'
+    if ordertype == 'Y':
+        side = 'Buy'
+    if ordertype == 'W':
+        side = 'Sell'
+    if ordertype == 'Q':
+        side = 'Buy'
+    if ordertype == 'P':
+        side = 'Sell'
+    # client = bitmex.bitmex(api_key=strategy.get('key'),api_secret=strategy.get('secret'))
+    # 价格需要获取
+    # client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType=Market).result()
+    order = {'market': cols[0], 'symbol': symbol, 'ordertype': ordertype, 'orderpricetype': cols[3], 'orderqty': orderQty
         , 'name': strategy.get('name'), 'orderid':'', 'createtime': datetime.datetime.now()}
     DBHelper.insert("order", order)
 
