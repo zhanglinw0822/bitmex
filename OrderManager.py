@@ -44,6 +44,10 @@ def create_order(strategy, content):
         side = 'Buy'
     if ordertype == 'P':
         side = 'Sell'
+    if ordertype == 'B':
+        side = 'Buy'
+    if ordertype == 'S':
+        side = 'Sell'
     client = bitmex.bitmex(api_key=strategy.get('key'), api_secret=strategy.get('secret'))
     orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
     order = {'market': cols[0], 'symbol': symbol, 'ordertype': ordertype, 'orderpricetype': cols[3],

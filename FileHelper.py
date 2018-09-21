@@ -21,6 +21,6 @@ def create(path):
 
 if __name__ == '__main__':
     filenames = []
-    listdir("D:/data/", filenames)
+    listdir("E:/bit", filenames)
     for filename in filenames:
         print(read_one_line(filename))
