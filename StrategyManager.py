@@ -26,7 +26,7 @@ def initStrategy(strategys):
 
 
 if __name__ == '__main__':
-    xmlFilePath = os.path.abspath("E:\strategy\config.xml")
+    xmlFilePath = os.path.abspath("D:\strategy\config.xml")
     print(xmlFilePath)
     try:
         tree = ET.parse(xmlFilePath)

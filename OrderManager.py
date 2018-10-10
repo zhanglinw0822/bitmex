@@ -14,15 +14,17 @@ def scanorder(strategy):
     files = []
     FileHelper.listdir(path, files)
     for file in files:
-        nowTime = lambda: int(round(time.time() * 1000))
-        content = FileHelper.read_one_line(file)
+        if (FileHelper.getext(file) == 'txt'):
+            nowTime = lambda: int(round(time.time() * 1000))
+            content = FileHelper.read_one_line(file)
 
-        create_order(strategy, content)
+            create_order(strategy, content)
 
-        # DBHelper.query("order", None)
-        bakPath = path + "/bak/";
-        FileHelper.create(bakPath)
-        FileHelper.copy(file, bakPath + file.replace(path, "") + str(nowTime()) + ".txt")
+            # DBHelper.query("order", None)
+            bakPath = path + "/bak/";
+            FileHelper.create(bakPath)
+            filename = FileHelper.getbasename(file);
+            FileHelper.copy(file, bakPath + filename + "_" + str(nowTime()) + ".txt")
 
 
 def create_order(strategy, content):
