@@ -19,10 +19,28 @@ def traverseXml(element):
 
 def initStrategy(strategys):
     for strategy in strategys:
-        print(strategy.get('path') + "," + strategy.get('key') + "," + strategy.get('secret') + "," + strategy.get(
-            'name'))
+        print(strategy.get('path')+ "," + strategy.get('name') + "," + str(strategy.get('accounts')) )
         t = threading.Thread(target=OrderManager.addOrderObserver, args=(strategy,), name=strategy.get('name'))
         t.start()
+
+
+def parse_account(accountsElement):
+    accountList = accountsElement.findall("account");
+    accounts = []
+    for account in accountList:
+        name = None
+        key = None
+        secret = None
+        for child in account:
+            # print(child.tag, child.text)
+            if child.tag == 'key':
+                key = child.text.strip()
+            if child.tag == 'name':
+                name = child.text
+            if child.tag == 'secret':
+                secret = child.text.strip()
+        accounts.append({'name': name, 'key': key, 'secret': secret})
+    return accounts
 
 
 if __name__ == '__main__':
@@ -30,7 +48,7 @@ if __name__ == '__main__':
     print(xmlFilePath)
     try:
         tree = ET.parse(xmlFilePath)
-        print("tree type:", type(tree))
+        # print("tree type:", type(tree))
 
         # 获得根节点
         root = tree.getroot()
@@ -68,13 +86,11 @@ if __name__ == '__main__':
         for child in strategy:
             # print(child.tag, child.text)
             if child.tag == 'path':
-                path = child.text
-            if child.tag == 'key':
-                key = child.text
-            if child.tag == 'secret':
-                secret = child.text
+                path = child.text.strip()
             if child.tag == 'name':
                 name = child.text
+            if child.tag == 'accounts':
+                accounts = parse_account(child)
 
-        strategys.append({'path': path, 'key': key, 'secret': secret, 'name': name})
+        strategys.append({'path': path, 'name': name, 'accounts':accounts})
     initStrategy(strategys)

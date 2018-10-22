@@ -2,26 +2,51 @@
 <strategys>
 	<strategy>
 		<path>E:\bit</path>
-		<key>34DRwq1MqqWm8--POSUhEl9A</key>
-		<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
 		<name>cc</name>
+		<accounts>
+			<account>
+				<name>abc</name>
+				<key>34DRwq1MqqWm8--POSUhEl9A</key>
+				<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
+			</account>
+			<account>
+				<name>abc</name>
+				<key>34DRwq1MqqWm8--POSUhEl9A</key>
+				<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
+			</account>
+		</accounts>
 	</strategy>
 	<strategy>
 		<path>E:\kdj</path>
-		<key>34DRwq1MqqWm8--POSUhEl9A</key>
-		<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
 		<name>bb</name>
+		<accounts>
+			<account>
+				<name>abc</name>
+				<key>34DRwq1MqqWm8--POSUhEl9A</key>
+				<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
+			</account>
+		</accounts>
 	</strategy>
 	<strategy>
 		<path>E:\number</path>
-		<key>34DRwq1MqqWm8--POSUhEl9A</key>
-		<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
 		<name>aa</name>
+		<accounts>
+			<account>
+				<name>abc</name>
+				<key>34DRwq1MqqWm8--POSUhEl9A</key>
+				<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
+			</account>
+		</accounts>
 	</strategy>
 	<strategy>
 		<path>e:\aanumber</path>
-		<key>34DRwq1MqqWm8--POSUhEl9A</key>
-		<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
 		<name>dd</name>
+		<accounts>
+			<account>
+				<name>abc</name>
+				<key>34DRwq1MqqWm8--POSUhEl9A</key>
+				<secret>txfKD1Je6GJqJyOqEr7UnJC8ebPURzFzUNuZsJz2Pp-V8hau</secret>
+			</account>
+		</accounts>
 	</strategy>
 </strategys>
