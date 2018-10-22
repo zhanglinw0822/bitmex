@@ -53,8 +53,8 @@ def create_order(strategy, content):
         side = 'Buy'
     if ordertype == 'S':
         side = 'Sell'
+    logger = Logger.Logger('all.log', level='debug').logger
     for account in strategy.get('accounts'):
-        logger = Logger.Logger('all.log', level='debug').logger
         try:
             # client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
             client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
@@ -109,7 +109,7 @@ def create_order(strategy, content):
         order = {'market': cols[0], 'symbol': symbol, 'ordertype': ordertype, 'orderpricetype': cols[3],
                  'orderqty': orderQty, 'strategyname': strategy.get('name'),'name': account.get('accountname'), 'orderid': orderresult[0]['orderID'], 'createtime': datetime.datetime.now()}
         DBHelper.insert("order", order)
-        print('account:' + str(account) + ',order:' + str(order))
+        logger.info('order success!account:' + str(account) + ',order:' + str(order))
 
 
 def addOrderObserver(strategy):
