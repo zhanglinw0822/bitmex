@@ -54,11 +54,10 @@ def create_order(strategy, content):
     if ordertype == 'S':
         side = 'Sell'
     for account in strategy.get('accounts'):
-        print('account:'+str(account))
-        logger = Logger('all.log', level='debug')
+        logger = Logger.Logger('all.log', level='debug').logger
         try:
-            client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
-            # client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
+            # client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
+            client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
             orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
         except Exception as e:
             if e.response is None:
@@ -68,6 +67,7 @@ def create_order(strategy, content):
             if e.response.status_code == 401:
                 logger.error("API Key or Secret incorrect, please check and restart.")
                 logger.error("Error: " + e.response.text)
+                logger.error('Account:'+str(account))
                 # Always exit, even if rethrow_errors, because this is fatal
                 send_email(e.response.text)
                 exit(1)
