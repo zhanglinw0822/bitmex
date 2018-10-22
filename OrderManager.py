@@ -8,6 +8,7 @@ import DBHelper
 import FileEventHandler
 import FileHelper
 import bitmex
+import Logger
 from send_mail import send_email
 
 
@@ -54,12 +55,12 @@ def create_order(strategy, content):
         side = 'Sell'
     for account in strategy.get('accounts'):
         print('account:'+str(account))
-        logger = logging.getLogger('root')
+        logger = Logger('all.log', level='debug')
         try:
             client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
             # client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
             orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
-        except requests.exceptions.HTTPError as e:
+        except Exception as e:
             if e.response is None:
                 raise e
 
