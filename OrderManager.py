@@ -56,8 +56,8 @@ def create_order(strategy, content):
     logger = Logger.Logger('all.log', level='debug').logger
     for account in strategy.get('accounts'):
         try:
-            # client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
-            client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
+            client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
+#             client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
             orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
         except Exception as e:
             if e.response is None:
