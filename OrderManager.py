@@ -10,6 +10,7 @@ import FileHelper
 import bitmex
 import Logger
 from send_mail import send_email
+import pdb
 
 
 def scanorder(strategy):
@@ -54,12 +55,16 @@ def create_order(strategy, content):
     if ordertype == 'S':
         side = 'Sell'
     logger = Logger.Logger('all.log', level='debug').logger
+    #pdb.set_trace()
     for account in strategy.get('accounts'):
+        logger.info('prepare order,account:' + str(account))
         try:
             client = bitmex.bitmex(test=False, api_key=account.get('key'), api_secret=account.get('secret'))
 #             client = bitmex.bitmex(test=True, api_key=account.get('key'), api_secret=account.get('secret'))
             orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
+            logger.info('order success!account:' + str(account))
         except Exception as e:
+            logger.error('order error!:' + str(e))
             if e.response is None:
                 logger.error('order error!:' + str(account))
                 raise e
@@ -72,7 +77,12 @@ def create_order(strategy, content):
                 # Always exit, even if rethrow_errors, because this is fatal
                 send_email(e.response.text)
                 exit(1)
-
+            # 403 -
+            if e.response.status_code == 403:
+                logger.error('Account:'+str(account))
+                # Always exit, even if rethrow_errors, because this is fatal
+                send_email(e.response.text)
+                exit(1)
             # 404, can be thrown if order canceled or does not exist.
             elif e.response.status_code == 404:
                 send_email(e.response.text)
@@ -106,11 +116,14 @@ def create_order(strategy, content):
                     logger.error('Account out of funds. The message: %s' % error['message'])
                     send_email(e.response.text)
                     exit(1)
+            else :
+                raise e
 
         order = {'market': cols[0], 'symbol': symbol, 'ordertype': ordertype, 'orderpricetype': cols[3],
                  'orderqty': orderQty, 'strategyname': strategy.get('name'),'name': account.get('accountname'), 'orderid': orderresult[0]['orderID'], 'createtime': datetime.datetime.now()}
         DBHelper.insert("order", order)
         logger.info('order success!account:' + str(account) + ',order:' + str(order))
+        
 
 
 def addOrderObserver(strategy):
