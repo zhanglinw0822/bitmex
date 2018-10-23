@@ -61,6 +61,7 @@ def create_order(strategy, content):
             orderresult = client.Order.Order_new(symbol=symbol, orderQty=orderQty, side=side, ordType='Market').result()
         except Exception as e:
             if e.response is None:
+                logger.error('order error!:' + str(account))
                 raise e
 
             # 401 - Auth error. This is fatal.

@@ -24,7 +24,7 @@ def getbasename(src):
 def create(path):
     if os.path.exists(path):
         return
-    os.mkdir(path)
+    os.makedirs(path)
 
 if __name__ == '__main__':
     filenames = []
